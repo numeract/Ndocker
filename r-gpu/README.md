@@ -176,7 +176,7 @@ docker build --target r-gpu-xgboost -t numeract/r-gpu-xgboost:18.11 .
 docker build --target r-gpu-catboost -t numeract/r-gpu-catboost:18.11 .
 docker build --target r-gpu-full -t numeract/r-gpu-full:18.11 .
 
-docker build --target r-gpu-studio -t numeract/r-gpu-studio:18.11 .
+docker build --target r-gpu-rstudio -t numeract/r-gpu-rstudio:18.11 .
 docker build --target r-gpu-user -t numeract/r-gpu-user:18.11 .
 ```
 

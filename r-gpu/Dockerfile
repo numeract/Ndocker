@@ -323,4 +323,7 @@ RUN apt-get update \
     && cat /home/${USER}/user-cran-packages | xargs install.r \
     && cat /home/${USER}/user-github-packages | xargs installGithub.r \
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-    && rm -rf /var/lib/apt/lists/* 
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /home/${USER}/user-ubuntu-libs \
+    && rm -f /home/${USER}/user-cran-packages \
+    && rm -f /home/${USER}/user-github-packages
