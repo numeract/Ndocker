@@ -6,8 +6,7 @@
 
 ### 1. Ubuntu
 
-- Install Ubuntu Server 18.04 LTS
-- Update
+- Install Ubuntu Server 18.04 LTS & update
 
 ```sh
 sudo apt-get update
@@ -25,7 +24,7 @@ sudo apt install ubuntu-drivers-common
 ### 2. NVIDIA drivers
 
 - ref: https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
-- https://www.nvidia.com/object/unix.html
+- ref: https://www.nvidia.com/object/unix.html
 
 ```sh
 # add graphics repo
@@ -39,6 +38,7 @@ ubuntu-drivers devices
 sudo apt install nvidia-driver-410
 
 # reboot
+sudo reboot
 
 # check installation
 sudo lshw -c display
