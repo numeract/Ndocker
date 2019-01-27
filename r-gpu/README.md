@@ -140,74 +140,82 @@ docker login nvcr.io
 # Password: <Your API Key>
 ```
 
-- identify the latest TensorFlow version for Python 3 (using python 3 only for this setup)
+- identify the latest TensorFlow version for Python 3 (using python 3 for this setup)
 
 ```sh
-docker pull nvcr.io/nvidia/tensorflow:18.11-py3
+docker pull nvcr.io/nvidia/tensorflow:19.01-py3
 ```
 
 - test tensorflow gpu inside the container
 ```sh
-nvidia-docker run -it --rm nvcr.io/nvidia/tensorflow:18.11-py3
+nvidia-docker run -it --rm nvcr.io/nvidia/tensorflow:19.01-py3
 # there should not be any error at stat, NOTEs are OK
 ```
 
 
 ## Build
 
-**Note: use YY.MM convention to denote the version (follow Nvidia)**
+**Copy all files from `r-gpu` to the local working folder**
+
+*Note: use YY.MM convention to denote the version (follow NVIDIA)*
 
 #### Build final image (user)
 
 ```sh
-docker build --target r-gpu-user -t numeract/r-gpu-user:18.11 .
+docker build --target r-gpu-user -t numeract/r-gpu-user:19.01 .
 ```
 
 #### Or build each intermediary images (for easy reference)
 
 
 ```sh
-docker build --target r-gpu-base -t numeract/r-gpu-base:18.11 .
-docker build --target r-gpu-keras -t numeract/r-gpu-keras:18.11 .
-docker build --target r-gpu-keras-test -t numeract/r-gpu-keras-test:18.11 .
+docker build --target r-gpu-base -t numeract/r-gpu-base:19.01 .
+docker build --target r-gpu-keras -t numeract/r-gpu-keras:19.01 .
+docker build --target r-gpu-keras-test -t numeract/r-gpu-keras-test:19.01 .
 
-docker build --target r-gpu-tidyverse -t numeract/r-gpu-tidyverse:18.11 .
-docker build --target r-gpu-xgboost -t numeract/r-gpu-xgboost:18.11 .
-docker build --target r-gpu-catboost -t numeract/r-gpu-catboost:18.11 .
-docker build --target r-gpu-full -t numeract/r-gpu-full:18.11 .
+docker build --target r-gpu-tidyverse -t numeract/r-gpu-tidyverse:19.01 .
+docker build --target r-gpu-xgboost -t numeract/r-gpu-xgboost:19.01 .
+docker build --target r-gpu-catboost -t numeract/r-gpu-catboost:19.01 .
+docker build --target r-gpu-full -t numeract/r-gpu-full:19.01 .
 
-docker build --target r-gpu-rstudio -t numeract/r-gpu-rstudio:18.11 .
-docker build --target r-gpu-user -t numeract/r-gpu-user:18.11 .
+docker build --target r-gpu-rstudio -t numeract/r-gpu-rstudio:19.01 .
+docker build --target r-gpu-user -t numeract/r-gpu-user:19.01 .
 ```
 
 #### Test with
 
-_(container will be removed at exit)_
+_(containers will be removed at exit)_
 
 ```sh
-nvidia-docker run -it --rm numeract/r-gpu-keras-test:18.11
-nvidia-docker run -p 8787:8787 -it --rm numeract/r-gpu-user:18.11
+nvidia-docker run -it --rm numeract/r-gpu-keras-test:19.01
 ```
 
+Watch the console output and note whether there is a message from Tensorflow
+indicating that it is using the GPU.
 
-#### Run with
 
 ```sh
-nvidia-docker run -p 8787:8787 -it --rm numeract/r-gpu-user:18.11
+nvidia-docker run -p 8787:8787 -it --rm numeract/r-gpu-user:19.01
 ```
 
-## Docker compose
+Point a browser to `http://<ip address>:8787` - this should show the RStudio
+Server IDE (default username and password are `rstudio`).
 
 
+## TODO:
 
-## References
+- check if all files present before build (?)
+- build R from source
 
 
-R on Docker, Ubuntu + TensorFlow
+## Acknowledgments
 
-- https://github.com/landeranalytics/r-ml
-- https://github.com/KaiLicht/DataScience_Toolbox/tree/master/dockerfiles
-    + https://klichtenberg.com/?p=151
-- https://github.com/rocker-org/rocker
+- [rocker organization](https://hub.docker.com/u/rocker) for maintaining the docker files for R
+    + https://github.com/rocker-org/rocker
     + https://github.com/rocker-org/rocker/tree/master/r-apt/xenial
     + https://github.com/rocker-org/rocker-versioned
+- KaiLicht for the [writeup](https://klichtenberg.com/?p=151) and repo
+    + https://github.com/KaiLicht/DataScience_Toolbox/tree/master/dockerfiles
+- Jared Lander for the multi-stage build idea
+    + https://github.com/landeranalytics/r-ml
+- Ian Scott for testing and helpful comments

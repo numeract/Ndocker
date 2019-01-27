@@ -2,7 +2,7 @@
 ## r-gpu-base: Ubuntu + TensorFlow + rocker/r-base
 ############################################################
 
-ARG TF_VERSION=18.11
+ARG TF_VERSION=19.01
 FROM nvcr.io/nvidia/tensorflow:${TF_VERSION}-py3 as r-gpu-base
 # based on: ubuntu 16.04 LTS, python 3.5
 # needs nvidia drivers >= 410
@@ -10,7 +10,7 @@ FROM nvcr.io/nvidia/tensorflow:${TF_VERSION}-py3 as r-gpu-base
 LABEL maintainer="Mike Badescu <mike.badescu@numeract.com>"
 
 # specify R version; for 3.6 need to change the repo dir as well
-ENV R_VERSION=${R_VERSION:-3.5.1} \
+ENV R_VERSION=${R_VERSION:-3.5.2} \
     TERM=xterm
 
 # for R we do not really need a user (libs installed globally)
@@ -171,7 +171,7 @@ FROM r-gpu-base as r-gpu-catboost
 
 # https://tech.yandex.com/catboost/doc/dg/installation/r-installation-binary-installation-docpage/#r-installation-binary-installation
 # https://rdrr.io/cran/remotes/man/install_url.html
-# https://www.rdocumentation.org/packages/utils/versions/3.5.1/topics/install.packages
+# https://www.rdocumentation.org/packages/utils/versions/3.5.2/topics/install.packages
 
 ENV CB_URL=https://github.com/catboost/catboost/releases/download/v0.11.2/catboost-R-Linux-0.11.2.tgz
 RUN install.r remotes \
@@ -196,13 +196,14 @@ COPY --from=r-gpu-catboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-
 
 FROM r-gpu-full as r-gpu-rstudio
 
-# follow https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/3.5.1/Dockerfile
+# follow https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/3.5.2/Dockerfile
 # use /usr/lib/ instead of /usr/local/lib
 
 ARG RSTUDIO_VERSION
-ENV RSTUDIO_VERSION=${RSTUDIO_VERSION:-1.1.456}
+# using the latest RStudio version by default
+#ENV RSTUDIO_VERSION=${RSTUDIO_VERSION:0.1.463}
 ARG S6_VERSION
-ENV S6_VERSION=${S6_VERSION:-v1.21.4.0}
+ENV S6_VERSION=${S6_VERSION:-v1.21.7.0}
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 
@@ -220,6 +221,8 @@ RUN apt-get update \
         lsb-release \
         psmisc \
         procps \
+        # MB: nvidia/tensorflow is using python 3.5
+        python3-setuptools \
         sudo \
         wget \
     ## MB: ubuntu seems to have a more recent version, skip libssl
