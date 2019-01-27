@@ -198,8 +198,9 @@ indicating that it is using the GPU.
 nvidia-docker run -p 8787:8787 -it --rm numeract/r-gpu-user:19.01
 ```
 
-Point a browser to `http://<ip address>:8787` - this should show the RStudio
-Server IDE (default username and password are `rstudio`).
+Point a browser to `http://<ip address>:8787` - this should show the RStudio 
+Server IDE (default username and password are `rstudio`). Use CTRL-C in the 
+terminal to stop the container.
 
 
 ## TODO:
