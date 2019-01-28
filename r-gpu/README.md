@@ -159,9 +159,10 @@ nvidia-docker run -it --rm nvcr.io/nvidia/tensorflow:19.01-py3
 
 *Note: use YY.MM convention to denote the version (follow NVIDIA)*
 
-#### Build final image (user)
+#### Build final images
 
 ```sh
+docker build --target r-gpu-rstudio -t numeract/r-gpu-rstudio:19.01 .
 docker build --target r-gpu-user -t numeract/r-gpu-user:19.01 .
 ```
 
